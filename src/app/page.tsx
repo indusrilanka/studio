@@ -1,3 +1,4 @@
+
 "use client"; // Required for useRouter and form handling
 
 import React from 'react';
@@ -48,8 +49,11 @@ export default function LoginPage() {
         title: "Login Successful",
         description: "Welcome back to LabTrak!",
       });
-      // Simulate setting an auth token or session
-      localStorage.setItem("isAuthenticated", "true"); // Simple flag for demo
+      // Set a cookie for authentication
+      // Note: In a real app, this cookie should be secure (HttpOnly, SameSite, Secure in production)
+      // and likely set by the server upon successful authentication.
+      document.cookie = "isAuthenticated=true; path=/; max-age=" + (60 * 60 * 24 * 7); // Expires in 7 days
+      
       router.push('/dashboard'); // Redirect to the main app page
     } else {
       toast({

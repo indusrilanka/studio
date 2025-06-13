@@ -15,7 +15,9 @@ export default function AppLayout({
       <div className="flex flex-col h-screen">
         <header className="bg-card border-b border-border shadow-sm print:hidden">
           <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-            <Logo />
+            <div className="mr-6">
+              <Logo />
+            </div>
             <MainNav />
           </div>
         </header>

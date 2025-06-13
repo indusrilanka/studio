@@ -65,7 +65,7 @@ const MainNav = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+                    className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
                   >
                     <link.icon className="h-5 w-5" />
                     <span className="font-medium">{link.label}</span>
@@ -76,7 +76,7 @@ const MainNav = () => {
                     <DropdownMenuItem
                       key={subLink.id}
                       onClick={() => handleNavClick(subLink)}
-                      className="text-foreground hover:bg-accent/10 hover:text-accent-foreground cursor-pointer"
+                      className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
                     >
                       <subLink.icon className="h-4 w-4 mr-2" />
                       {subLink.label}
@@ -90,7 +90,7 @@ const MainNav = () => {
             <Button
               key={link.id}
               variant="ghost"
-              className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+              className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
               onClick={() => handleNavClick(link)}
             >
               <link.icon className="h-5 w-5" />
@@ -106,7 +106,7 @@ const MainNav = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="px-3 py-2 flex items-center space-x-2 rounded-md text-foreground hover:bg-accent/10 hover:text-accent-foreground"
+              className="px-3 py-2 flex items-center space-x-2 rounded-md text-foreground hover:bg-accent hover:text-accent-foreground"
             >
               <UserCircle className="h-5 w-5" />
               <span className="text-sm font-medium hidden md:inline">Admin User</span>

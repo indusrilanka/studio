@@ -16,7 +16,6 @@ import {
 import { useTabs } from '@/contexts/TabContext';
 import type { NavLink } from '@/types';
 import { useToast } from '@/hooks/use-toast';
-import { ThemeToggleButton } from './ThemeToggleButton';
 
 const navLinks: NavLink[] = [
   { id: 'patients', label: 'Patient', icon: Users, contentKey: 'patients' },
@@ -101,7 +100,7 @@ const MainNav = () => {
 
       {/* Right-aligned items */}
       <div className="flex items-center space-x-3 ml-auto">
-        <ThemeToggleButton />
+        {/* ThemeToggleButton removed from here */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

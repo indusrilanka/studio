@@ -1,3 +1,4 @@
+
 import Logo from '@/components/core/Logo';
 import MainNav from '@/components/core/MainNav';
 import TabManager from '@/components/core/TabManager';
@@ -28,7 +29,7 @@ export default function AppLayout({
               it needs to be conditionally rendered based on tabs state.
               Currently, TabManager shows a message if no tabs are open.
            */}
-           {/* {children} */}
+           {children}
         </main>
       </div>
     </TabProvider>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -15,14 +16,25 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
       return <PatientTabContent />;
     case 'invoices':
     case 'laboratory':
-    case 'master-data':
+    // Removed 'master-data' and 'system' as they are now parent menu items
+    // Their children will open specific tabs
     case 'reports':
-    case 'system':
+      return <PlaceholderTabContent title={tab.title} />;
+    // Sub-menu items for Master Data
+    case 'master-data/test-catalog':
+    case 'master-data/referring-doctors':
+    // Sub-menu items for System
+    case 'system/user-management':
+    case 'system/audit-log':
       return <PlaceholderTabContent title={tab.title} />;
     // Add more cases for other contentKeys as they are implemented
     // e.g. case 'patient-form': return <PatientForm patientId={tab.data?.patientId} />;
     default:
-      return <PlaceholderTabContent title={`Unknown Tab: ${tab.title}`} />;
+      // If a parent menu item like 'master-data' itself was somehow opened (it shouldn't be)
+      if (tab.contentKey === 'master-data' || tab.contentKey === 'system') {
+         return <PlaceholderTabContent title={`${tab.title} (Parent Menu)`} />;
+      }
+      return <PlaceholderTabContent title={`Unknown Tab: ${tab.title} (Content Key: ${tab.contentKey})`} />;
   }
 };
 

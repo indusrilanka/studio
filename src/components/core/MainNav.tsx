@@ -1,40 +1,110 @@
+
 "use client";
 
 import React from 'react';
-import { Users, FileText, FlaskConical, Database, BarChart3, Settings, LucideIcon } from 'lucide-react';
+import {
+  Users, FileText, FlaskConical, Database, BarChart3, Settings, LogOut,
+  ListChecks, UsersRound, UsersCog, History, LucideIcon
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useTabs } from '@/contexts/TabContext';
 import type { NavLink } from '@/types';
+import { useToast } from '@/hooks/use-toast';
 
 const navLinks: NavLink[] = [
   { id: 'patients', label: 'Patient', icon: Users, contentKey: 'patients' },
   { id: 'invoices', label: 'Invoice', icon: FileText, contentKey: 'invoices' },
   { id: 'laboratory', label: 'Laboratory', icon: FlaskConical, contentKey: 'laboratory' },
-  { id: 'master-data', label: 'Master Data', icon: Database, contentKey: 'master-data' },
+  {
+    id: 'master-data', label: 'Master Data', icon: Database, children: [
+      { id: 'test-catalog', label: 'Test Catalog', icon: ListChecks, contentKey: 'master-data/test-catalog' },
+      { id: 'referring-doctors', label: 'Referring Doctors', icon: UsersRound, contentKey: 'master-data/referring-doctors' },
+    ]
+  },
   { id: 'reports', label: 'Report', icon: BarChart3, contentKey: 'reports' },
-  { id: 'system', label: 'System', icon: Settings, contentKey: 'system' },
+  {
+    id: 'system', label: 'System', icon: Settings, children: [
+      { id: 'user-management', label: 'User Management', icon: UsersCog, contentKey: 'system/user-management' },
+      { id: 'audit-log', label: 'Audit Log', icon: History, contentKey: 'system/audit-log' },
+    ]
+  },
 ];
 
 const MainNav = () => {
   const { openTab } = useTabs();
+  const { toast } = useToast();
 
   const handleNavClick = (link: NavLink) => {
-    openTab({ title: link.label, contentKey: link.contentKey, icon: link.icon });
+    if (link.contentKey) { // Ensure contentKey exists to open a tab
+      openTab({ title: link.label, contentKey: link.contentKey, icon: link.icon });
+    }
+  };
+
+  const handleLogout = () => {
+    document.cookie = "isAuthenticated=; path=/; max-age=0"; // Clear the cookie
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    window.location.href = '/'; // Redirect to login
   };
 
   return (
     <nav className="flex items-center space-x-1">
-      {navLinks.map((link) => (
-        <Button
-          key={link.id}
-          variant="ghost"
-          className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
-          onClick={() => handleNavClick(link)}
-        >
-          <link.icon className="h-5 w-5" />
-          <span className="font-medium">{link.label}</span>
-        </Button>
-      ))}
+      {navLinks.map((link) => {
+        if (link.children && link.children.length > 0) {
+          return (
+            <DropdownMenu key={link.id}>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+                >
+                  <link.icon className="h-5 w-5" />
+                  <span className="font-medium">{link.label}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-card border-border shadow-lg">
+                {link.children.map((subLink) => (
+                  <DropdownMenuItem
+                    key={subLink.id}
+                    onClick={() => handleNavClick(subLink)}
+                    className="text-foreground hover:bg-accent/10 hover:text-accent-foreground cursor-pointer"
+                  >
+                    <subLink.icon className="h-4 w-4 mr-2" />
+                    {subLink.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        }
+        return (
+          <Button
+            key={link.id}
+            variant="ghost"
+            className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+            onClick={() => handleNavClick(link)}
+          >
+            <link.icon className="h-5 w-5" />
+            <span className="font-medium">{link.label}</span>
+          </Button>
+        );
+      })}
+      <Button
+        variant="ghost"
+        className="text-foreground hover:bg-destructive/10 hover:text-destructive px-3 py-2 flex items-center space-x-2 rounded-md"
+        onClick={handleLogout}
+      >
+        <LogOut className="h-5 w-5" />
+        <span className="font-medium">Logout</span>
+      </Button>
     </nav>
   );
 };

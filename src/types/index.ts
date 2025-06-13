@@ -1,3 +1,4 @@
+
 import type { LucideIcon } from 'lucide-react';
 
 export interface Patient {
@@ -25,7 +26,8 @@ export interface NavLink {
   id: string;
   label: string;
   icon: LucideIcon;
-  contentKey: string; // Key to identify content to load in a tab
+  contentKey?: string; // Optional: if it's a parent menu, it might not open a tab itself
+  children?: NavLink[]; // For sub-menu items
 }
 
 export const GENDERS: Patient['gender'][] = ['Male', 'Female', 'Other'];

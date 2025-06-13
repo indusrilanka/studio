@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -16,6 +15,7 @@ import {
 import { useTabs } from '@/contexts/TabContext';
 import type { NavLink } from '@/types';
 import { useToast } from '@/hooks/use-toast';
+import { ThemeToggleButton } from './ThemeToggleButton';
 
 const navLinks: NavLink[] = [
   { id: 'patients', label: 'Patient', icon: Users, contentKey: 'patients' },
@@ -56,7 +56,7 @@ const MainNav = () => {
   };
 
   return (
-    <nav className="flex items-center space-x-1">
+    <nav className="flex items-center space-x-1 flex-grow">
       {navLinks.map((link) => {
         if (link.children && link.children.length > 0) {
           return (
@@ -97,14 +97,22 @@ const MainNav = () => {
           </Button>
         );
       })}
-      <Button
-        variant="ghost"
-        className="text-foreground hover:bg-destructive/10 hover:text-destructive px-3 py-2 flex items-center space-x-2 rounded-md"
-        onClick={handleLogout}
-      >
-        <LogOut className="h-5 w-5" />
-        <span className="font-medium">Logout</span>
-      </Button>
+
+      {/* Right-aligned items */}
+      <div className="flex items-center space-x-3 ml-auto">
+        <ThemeToggleButton />
+        <span className="text-sm text-foreground hidden md:inline">
+          Admin User
+        </span>
+        <Button
+          variant="ghost"
+          className="text-foreground hover:bg-destructive/10 hover:text-destructive px-3 py-2 flex items-center space-x-2 rounded-md"
+          onClick={handleLogout}
+        >
+          <LogOut className="h-5 w-5" />
+          <span className="font-medium">Logout</span>
+        </Button>
+      </div>
     </nav>
   );
 };

@@ -29,7 +29,7 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter(); // Still keep router for other potential uses, though not for this specific redirect
   const { toast } = useToast();
 
   const form = useForm<LoginFormValues>({
@@ -50,11 +50,10 @@ export default function LoginPage() {
         description: "Welcome back to LabTrak!",
       });
       // Set a cookie for authentication
-      // Note: In a real app, this cookie should be secure (HttpOnly, SameSite, Secure in production)
-      // and likely set by the server upon successful authentication.
       document.cookie = "isAuthenticated=true; path=/; max-age=" + (60 * 60 * 24 * 7); // Expires in 7 days
       
-      router.push('/dashboard'); // Redirect to the main app page
+      // Use window.location.href for a full page navigation to ensure cookie is sent
+      window.location.href = '/dashboard';
     } else {
       toast({
         variant: "destructive",

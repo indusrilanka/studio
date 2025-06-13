@@ -1,9 +1,10 @@
+
 "use client";
 
 import React from 'react';
 import {
   Users, FileText, FlaskConical, Database, BarChart3, Settings, LogOut,
-  ListChecks, UsersRound, UserCog, History, type LucideIcon
+  ListChecks, UsersRound, UserCog, History, type LucideIcon, UserCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -101,17 +102,26 @@ const MainNav = () => {
       {/* Right-aligned items */}
       <div className="flex items-center space-x-3 ml-auto">
         <ThemeToggleButton />
-        <span className="text-sm text-foreground hidden md:inline">
-          Admin User
-        </span>
-        <Button
-          variant="ghost"
-          className="text-foreground hover:bg-destructive/10 hover:text-destructive px-3 py-2 flex items-center space-x-2 rounded-md"
-          onClick={handleLogout}
-        >
-          <LogOut className="h-5 w-5" />
-          <span className="font-medium">Logout</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="px-3 py-2 flex items-center space-x-2 rounded-md text-foreground hover:bg-accent/10 hover:text-accent-foreground"
+            >
+              <UserCircle className="h-5 w-5" />
+              <span className="text-sm font-medium hidden md:inline">Admin User</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-card border-border shadow-lg w-48">
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="text-destructive hover:!bg-destructive/10 hover:!text-destructive focus:!bg-destructive/10 focus:!text-destructive cursor-pointer"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   );

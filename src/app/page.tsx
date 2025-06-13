@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Logo from '@/components/core/Logo';
 import { useToast } from '@/hooks/use-toast';
+import { ThemeToggleButton } from '@/components/core/ThemeToggleButton';
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -29,7 +30,7 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function LoginPage() {
-  const router = useRouter(); // Still keep router for other potential uses, though not for this specific redirect
+  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<LoginFormValues>({
@@ -42,17 +43,13 @@ export default function LoginPage() {
 
   // Simulate login
   const onSubmit = (data: LoginFormValues) => {
-    // In a real app, you'd call an API here
     console.log("Login data:", data);
     if (data.email === "admin@labtrak.com" && data.password === "password") {
       toast({
         title: "Login Successful",
         description: "Welcome back to LabTrak!",
       });
-      // Set a cookie for authentication
       document.cookie = "isAuthenticated=true; path=/; max-age=" + (60 * 60 * 24 * 7); // Expires in 7 days
-      
-      // Use window.location.href for a full page navigation to ensure cookie is sent
       window.location.href = '/dashboard';
     } else {
       toast({
@@ -118,6 +115,9 @@ export default function LoginPage() {
           </form>
         </Form>
       </Card>
+      <div className="mt-6">
+        <ThemeToggleButton />
+      </div>
        <footer className="mt-8 text-center text-sm text-muted-foreground">
         &copy; {new Date().getFullYear()} LabTrak. All rights reserved.
       </footer>

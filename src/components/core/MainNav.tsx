@@ -4,7 +4,7 @@
 import React from 'react';
 import {
   Users, FileText, FlaskConical, Database, BarChart3, Settings, LogOut,
-  ListChecks, UsersRound, UsersCog, History, LucideIcon
+  ListChecks, UsersRound, UserCog, History, type LucideIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,7 +30,7 @@ const navLinks: NavLink[] = [
   { id: 'reports', label: 'Report', icon: BarChart3, contentKey: 'reports' },
   {
     id: 'system', label: 'System', icon: Settings, children: [
-      { id: 'user-management', label: 'User Management', icon: UsersCog, contentKey: 'system/user-management' },
+      { id: 'user-management', label: 'User Management', icon: UserCog, contentKey: 'system/user-management' },
       { id: 'audit-log', label: 'Audit Log', icon: History, contentKey: 'system/audit-log' },
     ]
   },

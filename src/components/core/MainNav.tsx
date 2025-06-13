@@ -56,51 +56,52 @@ const MainNav = () => {
   };
 
   return (
-    <nav className="flex items-center space-x-1 flex-grow">
-      {navLinks.map((link) => {
-        if (link.children && link.children.length > 0) {
-          return (
-            <DropdownMenu key={link.id}>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
-                >
-                  <link.icon className="h-5 w-5" />
-                  <span className="font-medium">{link.label}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="bg-card border-border shadow-lg">
-                {link.children.map((subLink) => (
-                  <DropdownMenuItem
-                    key={subLink.id}
-                    onClick={() => handleNavClick(subLink)}
-                    className="text-foreground hover:bg-accent/10 hover:text-accent-foreground cursor-pointer"
+    <nav className="flex items-center justify-between flex-grow">
+      <div className="flex items-center space-x-1">
+        {navLinks.map((link) => {
+          if (link.children && link.children.length > 0) {
+            return (
+              <DropdownMenu key={link.id}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
                   >
-                    <subLink.icon className="h-4 w-4 mr-2" />
-                    {subLink.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                    <link.icon className="h-5 w-5" />
+                    <span className="font-medium">{link.label}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="bg-card border-border shadow-lg">
+                  {link.children.map((subLink) => (
+                    <DropdownMenuItem
+                      key={subLink.id}
+                      onClick={() => handleNavClick(subLink)}
+                      className="text-foreground hover:bg-accent/10 hover:text-accent-foreground cursor-pointer"
+                    >
+                      <subLink.icon className="h-4 w-4 mr-2" />
+                      {subLink.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            );
+          }
+          return (
+            <Button
+              key={link.id}
+              variant="ghost"
+              className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+              onClick={() => handleNavClick(link)}
+            >
+              <link.icon className="h-5 w-5" />
+              <span className="font-medium">{link.label}</span>
+            </Button>
           );
-        }
-        return (
-          <Button
-            key={link.id}
-            variant="ghost"
-            className="text-foreground hover:bg-accent/10 hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
-            onClick={() => handleNavClick(link)}
-          >
-            <link.icon className="h-5 w-5" />
-            <span className="font-medium">{link.label}</span>
-          </Button>
-        );
-      })}
+        })}
+      </div>
 
-      {/* Right-aligned items */}
-      <div className="flex items-center space-x-3 ml-auto">
-        {/* ThemeToggleButton removed from here */}
+      {/* User profile menu */}
+      <div className="flex items-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

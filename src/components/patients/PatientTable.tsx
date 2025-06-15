@@ -38,6 +38,7 @@ const PatientTable = () => {
   };
 
   const handleEdit = (patient: Patient) => {
+    console.log('Editing patient:', patient);
     setSelectedPatient(patient);
     setIsFormOpen(true);
   };
@@ -87,15 +88,15 @@ const PatientTable = () => {
     const result = [
       {
         label: 'Add',
-        action: () => console.log('Add Row', params),
+        action: () => console.log('ADD Row', params),
       },
       {
         label: 'Edit',
-        action: () => console.log('Edit Row', params),
+        action: () =>handleEdit(params),
       },
       {
         label: 'View',
-        action: () => console.log('View Row', params),
+        action: () => handleView(params),
       },
       {
         label: 'Export Row',

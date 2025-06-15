@@ -1,8 +1,7 @@
-
 import type { LucideIcon } from 'lucide-react';
 
 import { ColDef } from 'ag-grid-community';
-import { Interface } from 'readline';
+
 
 
 export interface Patient {
@@ -15,6 +14,16 @@ export interface Patient {
   phone: string;
   email: string;
   address: string;
+  insuranceProvider?: string;
+  insuranceNumber?: string;
+  status?: 'Active' | 'Inactive' | 'Deceased';
+  notes?: string;
+  emergencyContact?: {
+    name: string;
+    relation: string;
+    phone: string;
+  };
+  allergies?: string[];
 }
 
 export interface TabItem {

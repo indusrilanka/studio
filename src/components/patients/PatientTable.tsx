@@ -19,71 +19,18 @@ import { format } from 'date-fns';
 import { Input } from '../ui/input';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import DataGrid from '../core/data-grid';
-
-const initialPatients: Patient[] = [
-  {
-    id: '1',
-    mrn: 'MRN001',
-    firstName: 'Alice',
-    lastName: 'Smith',
-    dob: new Date('1990-05-15'),
-    gender: 'Female',
-    phone: '555-0101',
-    email: 'alice.smith@example.com',
-    address: '123 Oak St, Anytown',
-  },
-  {
-    id: '2',
-    mrn: 'MRN002',
-    firstName: 'Bob',
-    lastName: 'Johnson',
-    dob: new Date('1985-08-22'),
-    gender: 'Male',
-    phone: '555-0102',
-    email: 'bob.johnson@example.com',
-    address: '456 Pine St, Anytown',
-  },
-  {
-    id: '3',
-    mrn: 'MRN003',
-    firstName: 'Carol',
-    lastName: 'Williams',
-    dob: new Date('2000-01-30'),
-    gender: 'Female',
-    phone: '555-0103',
-    email: 'carol.williams@example.com',
-    address: '789 Maple St, Anytown',
-  },
-  {
-    id: '4',
-    mrn: 'MRN004',
-    firstName: 'David',
-    lastName: 'Brown',
-    dob: new Date('1978-11-03'),
-    gender: 'Male',
-    phone: '555-0104',
-    email: 'david.brown@example.com',
-    address: '101 Elm St, Anytown',
-  },
-  {
-    id: '5',
-    mrn: 'MRN005',
-    firstName: 'Eve',
-    lastName: 'Davis',
-    dob: new Date('1995-07-19'),
-    gender: 'Female',
-    phone: '555-0105',
-    email: 'eve.davis@example.com',
-    address: '202 Birch St, Anytown',
-  },
-];
+import { fetchPatients } from '@/ai/fakePatientApi';
 
 const PatientTable = () => {
-  const [patients, setPatients] = useState<Patient[]>(initialPatients);
+  const [patients, setPatients] = useState<Patient[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+
+  React.useEffect(() => {
+    fetchPatients().then(setPatients);
+  }, []);
 
   const handleAddNew = () => {
     setSelectedPatient(null);
@@ -123,17 +70,17 @@ const PatientTable = () => {
     );
   }, [patients, searchTerm]);
 
-  const rowData = [
-    { make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-    { make: 'Ford', model: 'F-Series', price: 33850, electric: false },
-    { make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
-  ];
-
-  const columnDefs = [
-    { field: 'make', headerName: 'Make', sortable: true, filter: true },
-    { field: 'model', headerName: 'Model', sortable: true, filter: true },
-    { field: 'price', headerName: 'Price', sortable: true, filter: true },
-    { field: 'electric', headerName: 'Electric', sortable: true, filter: true },
+  const patientColumnDefs = [
+    { field: 'mrn', headerName: 'MRN', sortable: true, filter: true },
+    { field: 'firstName', headerName: 'First Name', sortable: true, filter: true },
+    { field: 'lastName', headerName: 'Last Name', sortable: true, filter: true },
+    { field: 'dob', headerName: 'DOB', sortable: true, filter: true, valueFormatter: (params: any) => format(new Date(params.value), 'MM/dd/yyyy') },
+    { field: 'gender', headerName: 'Gender', sortable: true, filter: true },
+    { field: 'status', headerName: 'Status', sortable: true, filter: true },
+    { field: 'insuranceProvider', headerName: 'Insurance', sortable: true, filter: true },
+    { field: 'phone', headerName: 'Phone', sortable: true, filter: true },
+    { field: 'email', headerName: 'Email', sortable: true, filter: true },
+    { field: 'address', headerName: 'Address', sortable: false, filter: false },
   ];
 
   const getContextMenuItems = (params: any) => {
@@ -173,64 +120,7 @@ const PatientTable = () => {
       </div>
 
       <ScrollArea className="rounded-md border h-[calc(100vh-18rem)]">
-        {/* <Table>
-          <TableHeader className="sticky top-0 bg-card z-10">
-            <TableRow>
-              <TableHead>MRN</TableHead>
-              <TableHead>Full Name</TableHead>
-              <TableHead>D.O.B</TableHead>
-              <TableHead>Gender</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredPatients.map((patient) => (
-              <TableRow key={patient.id}>
-                <TableCell className="font-medium">{patient.mrn}</TableCell>
-                <TableCell>{patient.firstName} {patient.lastName}</TableCell>
-                <TableCell>{format(patient.dob, 'MM/dd/yyyy')}</TableCell>
-                <TableCell>{patient.gender}</TableCell>
-                <TableCell>
-                  <div>{patient.phone}</div>
-                  <div className="text-xs text-muted-foreground">{patient.email}</div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => handleView(patient)}>
-                        <Eye className="mr-2 h-4 w-4" /> View Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleEdit(patient)}>
-                        <Edit className="mr-2 h-4 w-4" /> Edit Patient
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={handleAddNew}>
-                        <PlusCircle className="mr-2 h-4 w-4" /> Add New Patient
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-            {filteredPatients.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
-                  No patients found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table> */}
-        <DataGrid rowData={rowData} columnDefs={columnDefs} enablePagination={true} getContextMenuItems={getContextMenuItems} />
-
+        <DataGrid rowData={filteredPatients} columnDefs={patientColumnDefs} enablePagination={true} getContextMenuItems={getContextMenuItems} />
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 

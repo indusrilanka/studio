@@ -50,11 +50,12 @@ type PatientFormValues = z.infer<typeof patientFormSchema>;
 
 interface PatientFormProps {
   patient?: Patient | null; // For editing
-  onSave: (data: Patient) => void;
+  onSave?: (data: Patient) => void;
   onCancel: () => void;
+  readOnly?: boolean;
 }
 
-const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) => {
+const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, readOnly = false }) => {
   const { toast } = useToast();
   const [step, setStep] = React.useState(0);
   const steps = ["Patient Info", "Contact & Insurance", "Emergency & Medical"];
@@ -144,7 +145,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
         : undefined,
       allergies: data.allergies ? data.allergies.split(',').map(a => a.trim()).filter(Boolean) : [],
     };
-    onSave(newPatientData);
+    onSave?.(newPatientData);
     toast({
       title: patient ? "Patient Updated" : "Patient Added",
       description: `${data.firstName} ${data.lastName} has been successfully ${patient ? 'updated' : 'added'}.`,
@@ -173,7 +174,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem className="md:col-span-2">
                     <FormLabel>Medical Record Number (MRN)</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., MRN12345" {...field} />
+                      <Input placeholder="e.g., MRN12345" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -186,7 +187,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John" {...field} />
+                      <Input placeholder="John" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -199,7 +200,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Doe" {...field} />
+                      <Input placeholder="Doe" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -220,6 +221,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                               "w-full pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
+                            disabled={readOnly}
                           >
                             {field.value ? (
                               format(field.value, "PPP")
@@ -230,17 +232,19 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
+                      {!readOnly && (
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      )}
                     </Popover>
                     <FormMessage />
                   </FormItem>
@@ -252,9 +256,9 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Gender</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={readOnly}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger disabled={readOnly}>
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
                       </FormControl>
@@ -282,7 +286,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input type="tel" placeholder="e.g., (555) 123-4567" {...field} />
+                      <Input type="tel" placeholder="e.g., (555) 123-4567" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -295,7 +299,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem>
                     <FormLabel>Email Address</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john.doe@example.com" {...field} />
+                      <Input type="email" placeholder="john.doe@example.com" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -308,7 +312,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem className="md:col-span-2">
                     <FormLabel>Address</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="123 Main St, Anytown, USA" {...field} />
+                      <Textarea placeholder="123 Main St, Anytown, USA" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -321,7 +325,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem>
                     <FormLabel>Insurance Provider</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., HealthFirst" {...field} />
+                      <Input placeholder="e.g., HealthFirst" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -334,7 +338,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                   <FormItem>
                     <FormLabel>Insurance Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., HF123456" {...field} />
+                      <Input placeholder="e.g., HF123456" {...field} disabled={readOnly} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -346,9 +350,9 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={readOnly}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger disabled={readOnly}>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                       </FormControl>
@@ -373,7 +377,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
               <FormField control={form.control} name="emergencyContactName" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Emergency Contact Name</FormLabel>
-                  <FormControl><Input placeholder="e.g., John Doe" {...field} /></FormControl>
+                  <FormControl><Input placeholder="e.g., John Doe" {...field} disabled={readOnly} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -382,14 +386,14 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
                 <FormField control={form.control} name="emergencyContactRelation" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Relation</FormLabel>
-                    <FormControl><Input placeholder="e.g., Husband" {...field} /></FormControl>
+                    <FormControl><Input placeholder="e.g., Husband" {...field} disabled={readOnly} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />
                 <FormField control={form.control} name="emergencyContactPhone" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Emergency Contact Phone</FormLabel>
-                    <FormControl><Input placeholder="e.g., (555) 987-6543" {...field} /></FormControl>
+                    <FormControl><Input placeholder="e.g., (555) 987-6543" {...field} disabled={readOnly} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />
@@ -398,7 +402,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
               <FormField control={form.control} name="allergies" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Allergies</FormLabel>
-                  <FormControl><Textarea placeholder="e.g., Penicillin, Peanuts" {...field} />
+                  <FormControl><Textarea placeholder="e.g., Penicillin, Peanuts" {...field} disabled={readOnly} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -407,7 +411,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
               <FormField control={form.control} name="notes" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Notes</FormLabel>
-                  <FormControl><Textarea placeholder="Additional notes..." {...field} /></FormControl>
+                  <FormControl><Textarea placeholder="Additional notes..." {...field} disabled={readOnly} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -416,16 +420,19 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
         )}
         <div className="flex justify-between pt-4">
           <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
-          <div className="flex gap-2">
-            {step > 0 && (
-              <Button type="button" variant="secondary" onClick={() => setStep(step - 1)}>Back</Button>
-            )}
-            {step < steps.length - 1 ? (
-              <Button type="button" onClick={() => setStep(step + 1)}>Next</Button>
-            ) : (
-              <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground">{patient ? 'Save Changes' : 'Add Patient'}</Button>
-            )}
-          </div>
+          { (
+            <div className="flex gap-2">
+              {step > 0 && (
+                <Button type="button" variant="secondary" onClick={() => setStep(step - 1)}>Back</Button>
+              )}
+              {step < steps.length - 1 && (
+                <Button type="button" onClick={() => setStep(step + 1)}>Next</Button>
+              )}
+              {!readOnly && step === steps.length - 1 && (
+                <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground">{patient ? 'Save Changes' : 'Add Patient'}</Button>
+              )}
+            </div>
+          )}
         </div>
       </form>
     </Form>

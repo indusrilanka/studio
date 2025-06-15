@@ -125,53 +125,30 @@ const PatientTable = () => {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+      <Dialog open={isFormOpen || isViewOpen} onOpenChange={open => { setIsFormOpen(open); setIsViewOpen(false); }}>
         <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-headline text-primary">{selectedPatient ? 'Edit Patient Details' : 'Add New Patient'}</DialogTitle>
+            <DialogTitle className="font-headline text-primary">
+              {isViewOpen ? 'Patient Details' : selectedPatient ? 'Edit Patient Details' : 'Add New Patient'}
+            </DialogTitle>
             <DialogDescription>
-              {selectedPatient ? 'Update the information for this patient.' : 'Fill in the details for the new patient.'}
+              {isViewOpen
+                ? 'View all information for this patient.'
+                : selectedPatient
+                ? 'Update the information for this patient.'
+                : 'Fill in the details for the new patient.'}
             </DialogDescription>
           </DialogHeader>
-          <PatientForm patient={selectedPatient} onSave={handleSavePatient} onCancel={() => setIsFormOpen(false)} />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isViewOpen} onOpenChange={setIsViewOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-headline text-primary">Patient Details</DialogTitle>
-          </DialogHeader>
-          {selectedPatient && (
-            <div className="space-y-3 py-4">
-              <p>
-                <strong>MRN:</strong> {selectedPatient.mrn}
-              </p>
-              <p>
-                <strong>Name:</strong> {selectedPatient.firstName} {selectedPatient.lastName}
-              </p>
-              <p>
-                <strong>Date of Birth:</strong> {format(selectedPatient.dob, 'MMMM dd, yyyy')}
-              </p>
-              <p>
-                <strong>Gender:</strong> {selectedPatient.gender}
-              </p>
-              <p>
-                <strong>Phone:</strong> {selectedPatient.phone}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedPatient.email}
-              </p>
-              <p>
-                <strong>Address:</strong> {selectedPatient.address}
-              </p>
-            </div>
-          )}
-          <div className="flex justify-end">
-            <Button variant="outline" onClick={() => setIsViewOpen(false)}>
-              Close
-            </Button>
-          </div>
+          <PatientForm
+            patient={selectedPatient}
+            onSave={handleSavePatient}
+            onCancel={() => {
+              setIsFormOpen(false);
+              setIsViewOpen(false);
+              setSelectedPatient(null);
+            }}
+            readOnly={isViewOpen}
+          />
         </DialogContent>
       </Dialog>
     </div>

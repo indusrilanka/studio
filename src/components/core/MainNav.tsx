@@ -1,10 +1,20 @@
-
-"use client";
+'use client';
 
 import React from 'react';
 import {
-  Users, FileText, FlaskConical, Database, BarChart3, Settings, LogOut,
-  ListChecks, UsersRound, UserCog, History, type LucideIcon, UserCircle
+  Users,
+  FileText,
+  FlaskConical,
+  Database,
+  BarChart3,
+  Settings,
+  LogOut,
+  ListChecks,
+  UsersRound,
+  UserCog,
+  History,
+  type LucideIcon,
+  UserCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,7 +22,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from '@/components/ui/dropdown-menu';
 import { useTabs } from '@/contexts/TabContext';
 import type { NavLink } from '@/types';
 import { useToast } from '@/hooks/use-toast';
@@ -22,17 +34,23 @@ const navLinks: NavLink[] = [
   { id: 'invoices', label: 'Invoice', icon: FileText, contentKey: 'invoices' },
   { id: 'laboratory', label: 'Laboratory', icon: FlaskConical, contentKey: 'laboratory' },
   {
-    id: 'master-data', label: 'Master Data', icon: Database, children: [
+    id: 'master-data',
+    label: 'Master Data',
+    icon: Database,
+    children: [
       { id: 'test-catalog', label: 'Test Catalog', icon: ListChecks, contentKey: 'master-data/test-catalog' },
       { id: 'referring-doctors', label: 'Referring Doctors', icon: UsersRound, contentKey: 'master-data/referring-doctors' },
-    ]
+    ],
   },
   { id: 'reports', label: 'Report', icon: BarChart3, contentKey: 'reports' },
   {
-    id: 'system', label: 'System', icon: Settings, children: [
+    id: 'system',
+    label: 'System',
+    icon: Settings,
+    children: [
       { id: 'user-management', label: 'User Management', icon: UserCog, contentKey: 'system/user-management' },
       { id: 'audit-log', label: 'Audit Log', icon: History, contentKey: 'system/audit-log' },
-    ]
+    ],
   },
 ];
 
@@ -41,22 +59,23 @@ const MainNav = () => {
   const { toast } = useToast();
 
   const handleNavClick = (link: NavLink) => {
-    if (link.contentKey) { // Ensure contentKey exists to open a tab
+    if (link.contentKey) {
       openTab({ title: link.label, contentKey: link.contentKey, icon: link.icon });
     }
   };
 
   const handleLogout = () => {
-    document.cookie = "isAuthenticated=; path=/; max-age=0"; // Clear the cookie
+    document.cookie = 'isAuthenticated=; path=/; max-age=0';
     toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out.",
+      title: 'Logged Out',
+      description: 'You have been successfully logged out.',
     });
-    window.location.href = '/'; // Redirect to login
+    window.location.href = '/';
   };
 
   return (
     <nav className="flex items-center justify-between flex-grow">
+      {/* Navigation Links */}
       <div className="flex items-center space-x-1">
         {navLinks.map((link) => {
           if (link.children && link.children.length > 0) {
@@ -113,9 +132,11 @@ const MainNav = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-card border-border shadow-lg w-48">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleLogout}
-              className="text-destructive hover:!bg-destructive/10 hover:!text-destructive focus:!bg-destructive/10 focus:!text-destructive cursor-pointer"
+              className="cursor-pointer text-destructive hover:!bg-destructive/10 hover:!text-destructive focus:!bg-destructive/10 focus:!text-destructive dark:text-destructive-foreground dark:hover:!text-destructive-foreground dark:focus:!text-destructive-foreground"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout

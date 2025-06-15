@@ -1,6 +1,10 @@
 
 import type { LucideIcon } from 'lucide-react';
 
+import { ColDef } from 'ag-grid-community';
+import { Interface } from 'readline';
+
+
 export interface Patient {
   id: string;
   mrn: string; // Medical Record Number
@@ -30,4 +34,51 @@ export interface NavLink {
   children?: NavLink[]; // For sub-menu items
 }
 
+export interface ContextMenuState<T = any> {
+  visible: boolean;
+  x: number;
+  y: number;
+  rowData: T | null;
+  colDef: ColDef | null;
+}
+
+
+export interface DataGridColumn {
+  field: string;
+  headerName?: string;
+  sortable?: boolean;
+  filter?: boolean;
+  checkboxSelection?: boolean;
+  cellRenderer?: string | ((params: any) => any);
+  [key: string]: any;
+}
+
+// export interface DataGridProps<T = any> {
+//   rowData: T[];
+//   columnDefs: DataGridColumn[];
+//   height?: number;
+//   onRowClicked?: (row: any) => void;
+//   enablePagination?: boolean;
+//   onCellContextMenu?: (event: any) => void;
+//   getContextMenuItems?: (params: any) => any[];
+//   defaultColDef?: {
+//     flex?: number;
+//     minWidth?: number;
+//     resizable?: boolean;
+//     [key: string]: any;
+//   };
+// }
+
+export interface DataGridProps<T = any> {
+  rowData: T[];
+  columnDefs: ColDef[];
+  height?: number;
+  onRowClicked?: (event: any) => void;
+  enablePagination?: boolean;
+  getContextMenuItems?: (params: any, colDef: ColDef) => any[];
+}
+
 export const GENDERS: Patient['gender'][] = ['Male', 'Female', 'Other'];
+
+
+

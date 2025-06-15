@@ -34,10 +34,15 @@ export default function DataGrid<T>({
   });
 
   const menuRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<any>(null);
 
   const handleContextMenu = useCallback((params: any) => {
     params.event.preventDefault();
-    params.event.stopPropagation(); // 👈 this is crucial
+    params.event.stopPropagation();
+    // Select the row under the mouse if not already selected
+    if (params.node && !params.node.isSelected()) {
+      params.node.setSelected(true, false); // false = do not clear other selections
+    }
     setContextMenuState({
       visible: true,
       x: params.event.clientX,
@@ -101,6 +106,7 @@ export default function DataGrid<T>({
   return (
     <div className="flex-grow" style={{ height: '70vh' }}>
       <AgGridReact
+        ref={gridRef}
         rowData={rowData}
         columnDefs={columnDefs}
         onRowClicked={onRowClicked}
@@ -108,6 +114,7 @@ export default function DataGrid<T>({
         pagination={enablePagination}
         paginationPageSize={20}
         theme={getGridTheme}
+        rowSelection="single"
         defaultColDef={{
           flex: 1,
           minWidth: 100,

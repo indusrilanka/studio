@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'; // Using next/font for optimization
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/core/ThemeProviderComponent";
+import { DisableContextMenuProvider } from "@/components/core/DisableContextMenuProvider";
 
 // If you have a variable font
 const inter = Inter({
@@ -33,7 +34,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <DisableContextMenuProvider>
+            {children}
+          </DisableContextMenuProvider>
           <Toaster />
         </ThemeProvider>
       </body>

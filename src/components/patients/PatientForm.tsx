@@ -368,74 +368,49 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel }) 
         {step === 2 && (
           <div className="bg-muted/40 rounded-lg p-3 shadow-sm border">
             <h3 className="font-bold text-base text-primary mb-2 border-b pb-1">Emergency & Medical</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-              <FormField
-                control={form.control}
-                name="emergencyContactName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Emergency Contact Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="emergencyContactRelation"
-                render={({ field }) => (
+            <div className="grid grid-cols-1 gap-2">
+              {/* 1st row: Emergency Contact Name (full width) */}
+              <FormField control={form.control} name="emergencyContactName" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Emergency Contact Name</FormLabel>
+                  <FormControl><Input placeholder="e.g., John Doe" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              {/* 2nd row: Relation and Emergency Contact Phone */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <FormField control={form.control} name="emergencyContactRelation" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Relation</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Husband" {...field} />
-                    </FormControl>
+                    <FormControl><Input placeholder="e.g., Husband" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="emergencyContactPhone"
-                render={({ field }) => (
+                )} />
+                <FormField control={form.control} name="emergencyContactPhone" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Emergency Contact Phone</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., (555) 987-6543" {...field} />
-                    </FormControl>
+                    <FormControl><Input placeholder="e.g., (555) 987-6543" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-              <FormField
-                control={form.control}
-                name="allergies"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Allergies</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Penicillin, Peanuts" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="notes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Notes</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Additional notes..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                )} />
+              </div>
+              {/* 3rd row: Allergies (full width, styled like Notes) */}
+              <FormField control={form.control} name="allergies" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Allergies</FormLabel>
+                  <FormControl><Textarea placeholder="e.g., Penicillin, Peanuts" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              {/* 4th row: Notes (full width) */}
+              <FormField control={form.control} name="notes" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notes</FormLabel>
+                  <FormControl><Textarea placeholder="Additional notes..." {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
             </div>
           </div>
         )}

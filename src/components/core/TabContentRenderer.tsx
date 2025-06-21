@@ -8,6 +8,7 @@ import PlaceholderTabContent from '@/components/tabs/PlaceholderTabContent';
 import DepartmentTabContent from '../tabs/DepartmentTabContent';
 import DepartmentTypeTabContent from '../tabs/DepartmentTypeTabContent';
 import RoleTabContent from '../tabs/RoleTabContent';
+import StaffTabContent from '../tabs/StaffTabContent';
 
 interface TabContentRendererProps {
   tab: TabItem;
@@ -24,6 +25,8 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
         return <DepartmentTypeTabContent/>
     case 'employee/role':
         return <RoleTabContent/>;
+    case 'employee/staff':
+      return <StaffTabContent/>;
     case 'invoices':
     case 'laboratory':    
         

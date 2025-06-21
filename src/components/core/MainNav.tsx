@@ -13,9 +13,10 @@ import {
   UsersRound,
   UserCog,
   History,
-  type LucideIcon,
   UserCircle,
+  type LucideIcon,
 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -25,10 +26,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
+
 import { useTabs } from '@/contexts/TabContext';
 import type { NavLink } from '@/types';
 import { useToast } from '@/hooks/use-toast';
-import { ChevronRight } from 'lucide-react';
 
 const navLinks: NavLink[] = [
   { id: 'patients', label: 'Patient', icon: Users, contentKey: 'patients' },
@@ -70,12 +71,6 @@ const MainNav = () => {
   const { openTab } = useTabs();
   const { toast } = useToast();
 
-  const handleNavClick = (link: NavLink) => {
-    if (link.contentKey) {
-      openTab({ title: link.label, contentKey: link.contentKey, icon: link.icon });
-    }
-  };
-
   const handleLogout = () => {
     document.cookie = 'isAuthenticated=; path=/; max-age=0';
     toast({
@@ -85,72 +80,103 @@ const MainNav = () => {
     window.location.href = '/';
   };
 
-  const renderMenu = (links: NavLink[], isSubMenu = false) =>
-    links.map((link) => {
-      if (link.children && link.children.length > 0) {
-        return (
-          <DropdownMenu key={link.id}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
-              >
-                <link.icon className="h-5 w-5" />
-                <span className="font-medium">{link.label}</span>
-                {isSubMenu && <ChevronRight className="h-4 w-4 ml-1" />}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" side={isSubMenu ? 'right' : 'bottom'} className="bg-card border-border shadow-lg">
-              {link.children.map((subLink) =>
-                subLink.children && subLink.children.length > 0 ? (
-                  <DropdownMenu key={subLink.id}>
-                    <DropdownMenuTrigger asChild>
-                      <DropdownMenuItem className="flex items-center">
-                        <subLink.icon className="h-4 w-4 mr-2" />
-                        {subLink.label}
-                        <ChevronRight className="h-4 w-4 ml-auto" />
-                      </DropdownMenuItem>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" side="right" className="bg-card border-border shadow-lg ml-2">
-                      {renderMenu(subLink.children, true)}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <DropdownMenuItem
-                    key={subLink.id}
-                    onClick={() => handleNavClick(subLink)}
-                    className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
-                  >
-                    <subLink.icon className="h-4 w-4 mr-2" />
-                    {subLink.label}
-                  </DropdownMenuItem>
-                )
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
+  const RenderNavItem = ({ link }: { link: NavLink }) => {
+    const handleClick = () => {
+      if (link.contentKey) {
+        openTab({
+          title: link.label,
+          contentKey: link.contentKey,
+          icon: link.icon,
+        });
       }
+    };
+
+    if (link.children && link.children.length > 0) {
       return (
-        <Button
-          key={link.id}
-          variant="ghost"
-          className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
-          onClick={() => handleNavClick(link)}
-        >
-          <link.icon className="h-5 w-5" />
-          <span className="font-medium">{link.label}</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+            >
+              <link.icon className="h-5 w-5" />
+              <span className="font-medium">{link.label}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="bg-card border-border shadow-lg z-50">
+            {link.children.map((child) =>
+              child.children && child.children.length > 0 ? (
+                <DropdownMenu key={child.id}>
+                  <DropdownMenuTrigger asChild>
+                    <DropdownMenuItem className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer">
+                      <child.icon className="h-4 w-4 mr-2" />
+                      {child.label}
+                    </DropdownMenuItem>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="ml-2 bg-card border-border shadow-lg z-50">
+                    {child.children.map((grandchild) => (
+                      <DropdownMenuItem
+                        key={grandchild.id}
+                        onClick={() =>
+                          openTab({
+                            title: grandchild.label,
+                            contentKey: grandchild.contentKey!,
+                            icon: grandchild.icon,
+                          })
+                        }
+                        className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                      >
+                        <grandchild.icon className="h-4 w-4 mr-2" />
+                        {grandchild.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <DropdownMenuItem
+                  key={child.id}
+                  onClick={() =>
+                    openTab({
+                      title: child.label,
+                      contentKey: child.contentKey!,
+                      icon: child.icon,
+                    })
+                  }
+                  className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                >
+                  <child.icon className="h-4 w-4 mr-2" />
+                  {child.label}
+                </DropdownMenuItem>
+              )
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
-    });
+    }
+
+    return (
+      <Button
+        key={link.id}
+        variant="ghost"
+        className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
+        onClick={handleClick}
+      >
+        <link.icon className="h-5 w-5" />
+        <span className="font-medium">{link.label}</span>
+      </Button>
+    );
+  };
 
   return (
     <nav className="flex items-center justify-between flex-grow">
       {/* Navigation Links */}
       <div className="flex items-center space-x-1">
-        {renderMenu(navLinks, false)}
+        {navLinks.map((link) => (
+          <RenderNavItem key={link.id} link={link} />
+        ))}
       </div>
 
-      {/* User profile menu */}
+      {/* User Profile Menu */}
       <div className="flex items-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -162,7 +188,7 @@ const MainNav = () => {
               <span className="text-sm font-medium hidden md:inline">Admin User</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-card border-border shadow-lg w-48">
+          <DropdownMenuContent align="end" className="bg-card border-border shadow-lg w-48 z-50">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem

@@ -14,8 +14,10 @@ import {
   UserCog,
   History,
   UserCircle,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react';
+
 
 import { Button } from '@/components/ui/button';
 import {
@@ -89,7 +91,7 @@ const MainNav = () => {
           icon: link.icon,
         });
       }
-    };
+    };    
 
     if (link.children && link.children.length > 0) {
       return (
@@ -100,20 +102,26 @@ const MainNav = () => {
               className="text-foreground hover:bg-accent hover:text-accent-foreground px-3 py-2 flex items-center space-x-2 rounded-md"
             >
               <link.icon className="h-5 w-5" />
-              <span className="font-medium">{link.label}</span>
+              <span className="font-medium">{link.label}</span>              
             </Button>
+            
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="bg-card border-border shadow-lg z-50">
             {link.children.map((child) =>
               child.children && child.children.length > 0 ? (
                 <DropdownMenu key={child.id}>
                   <DropdownMenuTrigger asChild>
-                    <DropdownMenuItem className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer">
-                      <child.icon className="h-4 w-4 mr-2" />
-                      {child.label}
+                
+                    <DropdownMenuItem  
+                    className="text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer flex justify-between items-center">
+                      <div className="flex items-center">
+                        <child.icon className="h-4 w-4 mr-2" />
+                        <span>{child.label}</span>
+                      </div>
+                      <ChevronRight className="h-4 w-4 ml-4 text-muted-foreground" />
                     </DropdownMenuItem>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="ml-2 bg-card border-border shadow-lg z-50">
+                  <DropdownMenuContent align="start" side="right" className="ml-2 bg-card border-border shadow-lg z-50">
                     {child.children.map((grandchild) => (
                       <DropdownMenuItem
                         key={grandchild.id}
@@ -163,6 +171,7 @@ const MainNav = () => {
       >
         <link.icon className="h-5 w-5" />
         <span className="font-medium">{link.label}</span>
+        
       </Button>
     );
   };

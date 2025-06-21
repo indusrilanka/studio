@@ -7,7 +7,7 @@ export async function fetchDepartments(): Promise<Department[]> {
     {
       id: 1,
       departmentCode: 'LAB001',
-      departmentName: 'Laboratory',
+      name: 'Laboratory',
       departmentTypeId: 1,
       location: 'Bldg A, Floor 1',
       headOfDepartmentId: 1,
@@ -19,7 +19,7 @@ export async function fetchDepartments(): Promise<Department[]> {
     {
       id: 2,
       departmentCode: 'RAD001',
-      departmentName: 'Radiology',
+      name: 'Radiology',
       departmentTypeId: 1,
       location: 'Bldg B, Floor 2',
       headOfDepartmentId: 2,
@@ -31,7 +31,7 @@ export async function fetchDepartments(): Promise<Department[]> {
     {
       id: 3,
       departmentCode: 'PHY001',
-      departmentName: 'Physiotherapy',
+      name: 'Physiotherapy',
       departmentTypeId: 3,
       location: 'Bldg C, Floor 1',
       headOfDepartmentId: 3,

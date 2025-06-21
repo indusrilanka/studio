@@ -30,7 +30,7 @@ export interface Patient {
 export interface Department {
   id: number;
   departmentCode: string;
-  departmentName: string;
+  name: string; // was departmentName
   departmentTypeId: number;
   location: string;
   headOfDepartmentId: number;
@@ -39,6 +39,8 @@ export interface Department {
   status: 'Active' | 'Inactive';
   description: string;
 }
+
+
 
 export interface Staff {
   id: number;
@@ -123,5 +125,57 @@ export interface DataGridProps<T = any> {
 
 export const GENDERS: Patient['gender'][] = ['Male', 'Female', 'Other'];
 
+export interface Specialization {
+  id: number;
+  name: string;
+}
 
+
+export const SPECIALIZATIONS = [
+  { id: 1, name: 'General Practitioner' },
+  { id: 2, name: 'Pediatrician' },
+  { id: 3, name: 'Cardiologist' },
+  { id: 4, name: 'Dermatologist' },
+  { id: 5, name: 'Neurologist' },
+  { id: 6, name: 'Psychiatrist' },
+  { id: 7, name: 'Endocrinologist' },
+  { id: 8, name: 'Nephrologist' },
+  { id: 9, name: 'Gastroenterologist' },
+  { id: 10, name: 'Pulmonologist' },
+  { id: 11, name: 'Oncologist' },
+  { id: 12, name: 'Rheumatologist' },
+  { id: 13, name: 'Orthopedic Surgeon' },
+  { id: 14, name: 'General Surgeon' },
+  { id: 15, name: 'ENT Specialist (Otolaryngologist)' },
+  { id: 16, name: 'Ophthalmologist' },
+  { id: 17, name: 'Gynecologist / Obstetrician' },
+  { id: 18, name: 'Urologist' },
+  { id: 19, name: 'Radiologist' },
+  { id: 20, name: 'Pathologist' },
+  { id: 21, name: 'Diabetologist' },
+  { id: 22, name: 'Hematologist' },
+  { id: 23, name: 'Infectious Disease Specialist' },
+  { id: 24, name: 'Geriatrician' },
+  { id: 25, name: 'Family Medicine' },
+  { id: 26, name: 'Allergy and Immunology' },
+  { id: 27, name: 'Anesthesiologist' },
+  { id: 28, name: 'Public Health Specialist' },
+  { id: 29, name: 'Rehabilitation Specialist' },
+  { id: 30, name: 'Sports Medicine Specialist' },
+] as const;
+
+
+// types.ts
+export interface ReferringDoctor {
+  id: number;
+  fullName: string;
+  specializationId: number;
+  specializationName: string;
+  registrationNumber: string;
+  hospitalOrClinic: string;
+  contactNumber: string;
+  email: string;
+  address: string;
+  status: 'Active' | 'Inactive';
+}
 

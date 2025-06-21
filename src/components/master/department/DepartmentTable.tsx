@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -6,23 +6,27 @@ import { PlusCircle } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import DataGrid from '@/components/core/data-grid';
 import DepartmentForm, { DepartmentFormValues } from './DepartmentForm';
+import { fetchDepartmentTypes } from '@/ai/fakeDepartmentTypeAPI';
+import { fetchStaff } from '@/ai/fakeStaffAPI';
+import { fetchDepartments } from '@/ai/fakeDepartmentApi';
+import type { DepartmentType, Staff,Department } from '@/types';
 
-export interface Department extends DepartmentFormValues {
-  id: string;
-}
 
-const initialDepartments: Department[] = [
-  { id: '1', name: 'Cardiology', description: 'Heart and vascular care' },
-  { id: '2', name: 'Neurology', description: 'Brain and nervous system' },
-  { id: '3', name: 'Pediatrics', description: 'Child health' },
-];
 
 const DepartmentTable: React.FC = () => {
-  const [departments, setDepartments] = useState<Department[]>(initialDepartments);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [departmentTypes, setDepartmentTypes] = useState<DepartmentType[]>([]);
+  const [staffList, setStaffList] = useState<Staff[]>([]);
+
+  useEffect(() => {
+    fetchDepartmentTypes().then(setDepartmentTypes);
+    fetchStaff().then(setStaffList);
+    fetchDepartments().then(setDepartments);
+  }, []);
 
   const handleAddNew = () => {
     setSelectedDepartment(null);
@@ -41,9 +45,30 @@ const DepartmentTable: React.FC = () => {
 
   const handleSaveDepartment = (data: DepartmentFormValues) => {
     if (selectedDepartment) {
-      setDepartments(departments.map((d) => (d.id === selectedDepartment.id ? { ...d, ...data } : d)));
+      setDepartments(
+        departments.map((d) =>
+          d.id === selectedDepartment.id
+            ? { ...d, ...data, id: d.id }
+            : d
+        )
+      );
     } else {
-      setDepartments([...departments, { ...data, id: crypto.randomUUID() }]);
+// Adding a new department
+      setDepartments([
+        ...departments,
+        {
+            id: departments.length > 0 ? Math.max(...departments.map(d => d.id)) + 1 : 1,
+            name: data.name,
+            description: data.description ?? '',
+            departmentCode: '', // Ensure departmentCode is present
+            departmentTypeId: data.departmentTypeId ?? 0,
+            headOfDepartmentId: data.headOfDepartmentId ?? 0,
+            location: data.location ?? '',
+            contactNumber: data.contactNumber ?? '',
+            email: data.email ?? '',
+            status: 'Active'
+        }
+      ]);
     }
     setIsFormOpen(false);
     setSelectedDepartment(null);
@@ -58,8 +83,17 @@ const DepartmentTable: React.FC = () => {
     );
   }, [departments, searchTerm]);
 
+  const getDepartmentTypeName = (id?: number) => departmentTypes.find(dt => dt.id === id)?.name || '';
+  const getStaffName = (id?: number) => staffList.find(s => s.id === id)?.fullName || '';
+
   const departmentColumnDefs = [
     { field: 'name', headerName: 'Department Name', sortable: true, filter: true },
+    { field: 'departmentTypeId', headerName: 'Department Type', valueGetter: (params: any) => getDepartmentTypeName(params.data.departmentTypeId), sortable: true, filter: true },
+    { field: 'headOfDepartmentId', headerName: 'Head of Department', valueGetter: (params: any) => getStaffName(params.data.headOfDepartmentId), sortable: true, filter: true },
+    { field: 'contactNumber', headerName: 'Contact Number', sortable: true, filter: true },
+    { field: 'email', headerName: 'Email', sortable: true, filter: true },
+    { field: 'status', headerName: 'Status', sortable: true, filter: true },
+    { field: 'location', headerName: 'Location', sortable: true, filter: true },
     { field: 'description', headerName: 'Description', sortable: true, filter: true },
   ];
 

@@ -51,8 +51,8 @@ const navLinks: NavLink[] = [
         label: 'Department',
         icon: Database,
         children: [
-          { id: 'department', label: 'Department', icon: Settings, contentKey: 'department/department' },
           { id: 'department-type', label: 'Department Type', icon: ListChecks, contentKey: 'department/department-type' },
+          { id: 'department', label: 'Department', icon: Settings, contentKey: 'department/department' },
         ],
       },
       {

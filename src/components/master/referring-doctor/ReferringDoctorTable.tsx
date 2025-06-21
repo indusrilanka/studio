@@ -3,64 +3,63 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
-import { fetchStaff } from '@/ai/fakeStaffAPI';
-import type { Staff } from '@/types';
-import StaffForm from './StaffForm';
+import { fetchReferringDoctors } from '@/ai/fakeReferringDoctorAPI';
+import type { ReferringDoctor } from '@/types';
+import ReferringDoctorForm from './ReferringDoctorForm';
 import DataGrid from '@/components/core/data-grid';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
-const StaffTable: React.FC = () => {
-  const [staff, setStaff] = useState<Staff[]>([]);
+const ReferringDoctorTable: React.FC = () => {
+  const [doctors, setDoctors] = useState<ReferringDoctor[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<ReferringDoctor | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetchStaff().then(setStaff);
+    fetchReferringDoctors().then(setDoctors);
   }, []);
 
   const handleAdd = () => {
-    setSelectedStaff(null);
+    setSelectedDoctor(null);
     setIsFormOpen(true);
   };
 
-  const handleEdit = (staff: Staff) => {
-    setSelectedStaff(staff);
+  const handleEdit = (doctor: ReferringDoctor) => {
+    setSelectedDoctor(doctor);
     setIsFormOpen(true);
   };
 
-  const handleView = (staff: Staff) => {
-    setSelectedStaff(staff);
+  const handleView = (doctor: ReferringDoctor) => {
+    setSelectedDoctor(doctor);
     setIsViewOpen(true);
   };
 
-  const handleSave = (data: Staff) => {
-    if (selectedStaff) {
-      setStaff(staff.map(s => s.id === data.id ? data : s));
+  const handleSave = (data: ReferringDoctor) => {
+    if (selectedDoctor) {
+      setDoctors(doctors.map(d => d.id === data.id ? data : d));
     } else {
-      setStaff([...staff, { ...data, id: Math.max(0, ...staff.map(s => s.id)) + 1 }]);
+      setDoctors([...doctors, { ...data, id: Math.max(0, ...doctors.map(d => d.id)) + 1 }]);
     }
     setIsFormOpen(false);
-    setSelectedStaff(null);
+    setSelectedDoctor(null);
   };
 
-  const filteredStaff = useMemo(() =>
-    searchTerm ? staff.filter((s) => s.fullName.toLowerCase().includes(searchTerm.toLowerCase())) : staff,
-    [staff, searchTerm]
+  const filteredDoctors = useMemo(() =>
+    searchTerm ? doctors.filter((d) => d.fullName.toLowerCase().includes(searchTerm.toLowerCase())) : doctors,
+    [doctors, searchTerm]
   );
 
-  const staffColumnDefs = [
+  const doctorColumnDefs = [
     { field: 'id', headerName: 'ID', sortable: true, filter: true },
     { field: 'fullName', headerName: 'Full Name', sortable: true, filter: true },
-    { field: 'roleId', headerName: 'Role', sortable: true, filter: true },
-    { field: 'departmentCode', headerName: 'Department Code', sortable: true, filter: true },
+    { field: 'specialty', headerName: 'Specialty', sortable: true, filter: true },
     { field: 'contactNumber', headerName: 'Contact Number', sortable: true, filter: true },
     { field: 'email', headerName: 'Email', sortable: true, filter: true },
     { field: 'status', headerName: 'Status', sortable: true, filter: true },
   ];
 
-  const getContextMenuItems = (row: Staff) => [
+  const getContextMenuItems = (row: ReferringDoctor) => [
     { label: 'Edit', action: () => handleEdit(row) },
     { label: 'View', action: () => handleView(row) },
   ];
@@ -69,19 +68,19 @@ const StaffTable: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <Input
-          placeholder="Search staff..."
+          placeholder="Search referring doctors..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
         <Button onClick={handleAdd} className="bg-primary text-primary-foreground">
-          <PlusCircle className="mr-2 h-5 w-5" /> Add Staff
+          <PlusCircle className="mr-2 h-5 w-5" /> Add Referring Doctor
         </Button>
       </div>
       <ScrollArea className="rounded-md border h-[calc(100vh-18rem)]">
         <DataGrid
-          rowData={filteredStaff}
-          columnDefs={staffColumnDefs}
+          rowData={filteredDoctors}
+          columnDefs={doctorColumnDefs}
           enablePagination={true}
           getContextMenuItems={getContextMenuItems}
           onRowClicked={(event: any) => handleEdit(event.data)}
@@ -92,17 +91,23 @@ const StaffTable: React.FC = () => {
         <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-headline text-primary">
-              {isViewOpen ? 'Staff Details' : selectedStaff ? 'Edit Staff' : 'Add Staff'}
+              {isViewOpen ? 'Referring Doctor Details' : selectedDoctor ? 'Edit Referring Doctor' : 'Add Referring Doctor'}
             </DialogTitle>
-           
+            <DialogDescription>
+              {isViewOpen
+                ? 'View all information for this referring doctor.'
+                : selectedDoctor
+                ? 'Update the information for this referring doctor.'
+                : 'Fill in the details for the new referring doctor.'}
+            </DialogDescription>
           </DialogHeader>
-          <StaffForm
-            staff={selectedStaff}
+          <ReferringDoctorForm
+            doctor={selectedDoctor}
             onSave={handleSave}
             onCancel={() => {
               setIsFormOpen(false);
               setIsViewOpen(false);
-              setSelectedStaff(null);
+              setSelectedDoctor(null);
             }}
             readOnly={isViewOpen}
           />
@@ -112,4 +117,4 @@ const StaffTable: React.FC = () => {
   );
 };
 
-export default StaffTable;
+export default ReferringDoctorTable;

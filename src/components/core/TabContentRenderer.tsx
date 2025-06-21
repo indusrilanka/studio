@@ -9,6 +9,8 @@ import DepartmentTabContent from '../tabs/DepartmentTabContent';
 import DepartmentTypeTabContent from '../tabs/DepartmentTypeTabContent';
 import RoleTabContent from '../tabs/RoleTabContent';
 import StaffTabContent from '../tabs/StaffTabContent';
+import ReferringDoctorTabContent from '../tabs/ReferringDoctorTabContent';
+
 
 interface TabContentRendererProps {
   tab: TabItem;
@@ -37,7 +39,7 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
     // Sub-menu items for Master Data
     case 'master-data/test-catalog':
     case 'master-data/referring-doctors':
-    // Sub-menu items for System
+      return <ReferringDoctorTabContent/>;
     case 'system/user-management':
     case 'system/audit-log':
       return <PlaceholderTabContent title={tab.title} />;

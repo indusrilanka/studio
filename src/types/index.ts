@@ -26,6 +26,40 @@ export interface Patient {
   allergies?: string[];
 }
 
+
+export interface Department {
+  id: number;
+  departmentCode: string;
+  departmentName: string;
+  departmentTypeId: number;
+  location: string;
+  headOfDepartmentId: number;
+  contactNumber: string;
+  email: string;
+  status: 'Active' | 'Inactive';
+  description: string;
+}
+
+export interface Staff {
+  id: number;
+  fullName: string;
+  roleId: number;
+  departmentCode: string;
+  contactNumber: string;
+  email: string;
+  status: 'Active' | 'Inactive';
+}
+
+export interface Role {
+  id: number;
+  name: string;
+}
+
+export interface DepartmentType {
+  id: number;
+  name: string;
+}
+
 export interface TabItem {
   id: string; // Unique identifier for the tab instance, can be contentKey if only one instance allowed
   title: string;

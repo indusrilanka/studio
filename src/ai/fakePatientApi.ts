@@ -22,7 +22,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'Diabetic. Needs regular checkups.',
       emergencyContact: {
         name: 'John Smith',
-        relation: 'Husband',
+        relationId: 13,
+        relationName: 'Friend',
         phone: '555-0199',
       },
       allergies: ['Penicillin'],
@@ -43,7 +44,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Sara Johnson',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0188',
       },
       allergies: [],
@@ -64,7 +66,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'Asthma.',
       emergencyContact: {
         name: 'Mike Williams',
-        relation: 'Father',
+        relationId: 1,
+        relationName: 'Father',
         phone: '555-0177',
       },
       allergies: ['Peanuts'],
@@ -85,7 +88,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Linda Brown',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0166',
       },
       allergies: ['Latex'],
@@ -106,7 +110,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'Hypertension.',
       emergencyContact: {
         name: 'Paul Davis',
-        relation: 'Brother',
+        relationId: 4,
+        relationName: 'Brother',
         phone: '555-0155',
       },
       allergies: [],
@@ -127,7 +132,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Nancy Miller',
-        relation: 'Mother',
+        relationId: 2,
+        relationName: 'Mother',
         phone: '555-0144',
       },
       allergies: ['Shellfish'],
@@ -148,7 +154,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'Recovering from surgery.',
       emergencyContact: {
         name: 'Tom Wilson',
-        relation: 'Husband',
+        relationId: 13,
+        relationName: 'Friend',
         phone: '555-0133',
       },
       allergies: [],
@@ -169,7 +176,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Anna Moore',
-        relation: 'Mother',
+        relationId: 2,
+        relationName: 'Mother',
         phone: '555-0122',
       },
       allergies: ['Gluten'],
@@ -190,7 +198,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Sam Taylor',
-        relation: 'Father',
+        relationId: 1,
+        relationName: 'Father',
         phone: '555-0111',
       },
       allergies: ['Soy'],
@@ -211,7 +220,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'Allergic to cats.',
       emergencyContact: {
         name: 'Lisa Anderson',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0100',
       },
       allergies: ['Cats'],
@@ -232,7 +242,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Peter Thomas',
-        relation: 'Husband',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0198',
       },
       allergies: [],
@@ -253,7 +264,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'Passed away 2023.',
       emergencyContact: {
         name: 'Mary Jackson',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0187',
       },
       allergies: [],
@@ -274,7 +286,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Steve White',
-        relation: 'Husband',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0176',
       },
       allergies: ['Aspirin'],
@@ -295,7 +308,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Paul Harris',
-        relation: 'Father',
+        relationId: 1,
+        relationName: 'Father',
         phone: '555-0165',
       },
       allergies: [],
@@ -316,7 +330,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: 'High cholesterol.',
       emergencyContact: {
         name: 'Julia Martin',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0154',
       },
       allergies: ['Eggs'],
@@ -337,7 +352,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Carlos Garcia',
-        relation: 'Father',
+        relationId: 1,
+        relationName: 'Father',
         phone: '555-0143',
       },
       allergies: [],
@@ -358,7 +374,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Maria Martinez',
-        relation: 'Mother',
+        relationId: 2,
+        relationName: 'Mother',
         phone: '555-0132',
       },
       allergies: ['Tree nuts'],
@@ -379,7 +396,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'George Clark',
-        relation: 'Husband',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0121',
       },
       allergies: [],
@@ -400,7 +418,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Helen Lewis',
-        relation: 'Mother',
+        relationId: 2,
+        relationName: 'Mother',
         phone: '555-0110',
       },
       allergies: ['Fish'],
@@ -421,7 +440,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Mark Walker',
-        relation: 'Father',
+        relationId: 1,
+        relationName: 'Father',
         phone: '555-0109',
       },
       allergies: [],
@@ -442,7 +462,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Victor Young',
-        relation: 'Husband',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0197',
       },
       allergies: ['Milk'],
@@ -463,7 +484,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Wendy King',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0186',
       },
       allergies: [],
@@ -484,7 +506,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Victor Scott',
-        relation: 'Father',
+        relationId: 1,
+        relationName: 'Father',
         phone: '555-0175',
       },
       allergies: ['Wheat'],
@@ -505,7 +528,8 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Yara Green',
-        relation: 'Wife',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0164',
       },
       allergies: [],
@@ -526,48 +550,16 @@ export async function fetchPatients(): Promise<Patient[]> {
       notes: '',
       emergencyContact: {
         name: 'Zane Baker',
-        relation: 'Husband',
+        relationId: 3,
+        relationName: 'Spouse',
         phone: '555-0153',
       },
       allergies: ['Strawberries'],
     },
   ];
-  // Map emergencyContact.relation to relationId/relationName and fix gender/status types
-  return rawPatients.map((p) => {
-    let emergencyContact = p.emergencyContact;
-    if (emergencyContact && (emergencyContact as any).relation) {
-      const rel = RELATIONS.find(r => r.name.toLowerCase() === (emergencyContact as any).relation.toLowerCase());
-      if (rel) {
-        emergencyContact = {
-          name: emergencyContact.name,
-          relationId: rel.id,
-          relationName: rel.name,
-          phone: emergencyContact.phone,
-        };
-      } else {
-        emergencyContact = {
-          name: emergencyContact.name,
-          relationId: 0,
-          relationName: (emergencyContact as any).relation || '',
-          phone: emergencyContact.phone,
-        };
-      }
-    } else if (emergencyContact && (emergencyContact as any).relationId && (emergencyContact as any).relationName) {
-      // Already has both, do nothing
-    } else if (emergencyContact) {
-      // Fallback: set both to empty
-      emergencyContact = {
-        name: emergencyContact.name,
-        relationId: 0,
-        relationName: '',
-        phone: emergencyContact.phone,
-      };
-    }
-    return {
-      ...p,
-      gender: p.gender as 'Male' | 'Female' | 'Other',
-      status: p.status as 'Active' | 'Inactive' | 'Deceased',
-      emergencyContact,
-    };
-  });
+  return rawPatients.map((p) => ({
+    ...p,
+    gender: p.gender as 'Male' | 'Female' | 'Other',
+    status: p.status as 'Active' | 'Inactive' | 'Deceased',
+  }));
 }

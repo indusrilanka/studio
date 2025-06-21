@@ -1,10 +1,11 @@
 // Fake API for patient data
 import type { Patient } from '@/types';
+import { RELATIONS } from '@/types';
 
 export async function fetchPatients(): Promise<Patient[]> {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 500));
-  return [
+  const rawPatients = [
     {
       id: '1',
       mrn: 'MRN001',
@@ -531,4 +532,42 @@ export async function fetchPatients(): Promise<Patient[]> {
       allergies: ['Strawberries'],
     },
   ];
+  // Map emergencyContact.relation to relationId/relationName and fix gender/status types
+  return rawPatients.map((p) => {
+    let emergencyContact = p.emergencyContact;
+    if (emergencyContact && (emergencyContact as any).relation) {
+      const rel = RELATIONS.find(r => r.name.toLowerCase() === (emergencyContact as any).relation.toLowerCase());
+      if (rel) {
+        emergencyContact = {
+          name: emergencyContact.name,
+          relationId: rel.id,
+          relationName: rel.name,
+          phone: emergencyContact.phone,
+        };
+      } else {
+        emergencyContact = {
+          name: emergencyContact.name,
+          relationId: 0,
+          relationName: (emergencyContact as any).relation || '',
+          phone: emergencyContact.phone,
+        };
+      }
+    } else if (emergencyContact && (emergencyContact as any).relationId && (emergencyContact as any).relationName) {
+      // Already has both, do nothing
+    } else if (emergencyContact) {
+      // Fallback: set both to empty
+      emergencyContact = {
+        name: emergencyContact.name,
+        relationId: 0,
+        relationName: '',
+        phone: emergencyContact.phone,
+      };
+    }
+    return {
+      ...p,
+      gender: p.gender as 'Male' | 'Female' | 'Other',
+      status: p.status as 'Active' | 'Inactive' | 'Deceased',
+      emergencyContact,
+    };
+  });
 }

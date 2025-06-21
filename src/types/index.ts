@@ -205,3 +205,12 @@ export const RELATIONS = [
   { id: 20, name: 'Other' },
 ] as const;
 
+export interface InsuranceProvider {
+  id: number;
+  name: string;
+  code: string;
+  contactNumber?: string;
+  address?: string;
+  status: 'Active' | 'Inactive';
+}
+

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -10,6 +9,7 @@ import DepartmentTypeTabContent from '../tabs/DepartmentTypeTabContent';
 import RoleTabContent from '../tabs/RoleTabContent';
 import StaffTabContent from '../tabs/StaffTabContent';
 import ReferringDoctorTabContent from '../tabs/ReferringDoctorTabContent';
+import InsuranceProviderTabContent from '../tabs/InsuranceProviderTabContent';
 
 
 interface TabContentRendererProps {
@@ -40,6 +40,8 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
     case 'master-data/test-catalog':
     case 'master-data/referring-doctors':
       return <ReferringDoctorTabContent/>;
+    case 'master-data/insurance-provider':
+      return <InsuranceProviderTabContent/>;
     case 'system/user-management':
     case 'system/audit-log':
       return <PlaceholderTabContent title={tab.title} />;

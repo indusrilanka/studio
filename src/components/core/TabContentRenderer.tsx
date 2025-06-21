@@ -6,6 +6,7 @@ import type { TabItem } from '@/types';
 import PatientTabContent from '@/components/tabs/PatientTabContent';
 import PlaceholderTabContent from '@/components/tabs/PlaceholderTabContent';
 import DepartmentTabContent from '../tabs/DepartmentTabContent';
+import DepartmentTypeTabContent from '../tabs/DepartmentTypeTabContent';
 
 interface TabContentRendererProps {
   tab: TabItem;
@@ -16,10 +17,13 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
   switch (tab.contentKey) {
     case 'patients':
       return <PatientTabContent />;
-    case 'invoices':
-    case 'laboratory':
-      case 'master-data/department':
+    case 'department/department':
         return <DepartmentTabContent/>
+    case 'department/department-type':
+        return <DepartmentTypeTabContent/>
+    case 'invoices':
+    case 'laboratory':    
+        
     // Removed 'master-data' and 'system' as they are now parent menu items
     // Their children will open specific tabs
     case 'reports':

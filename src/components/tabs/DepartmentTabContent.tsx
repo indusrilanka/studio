@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import PatientTable from '@/components/patients/PatientTable';
 import DepartmentTable from '../master/department/DepartmentTable';
 
 const DepartmentTabContent = () => {

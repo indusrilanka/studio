@@ -55,6 +55,15 @@ const navLinks: NavLink[] = [
           { id: 'department-type', label: 'Department Type', icon: ListChecks, contentKey: 'department/department-type' },
         ],
       },
+      {
+        id: 'employee-group',
+        label: 'Employee',
+        icon: Users,
+        children: [
+          { id: 'role', label: 'Role', icon: UserCog, contentKey: 'employee/role' },
+          { id: 'staff', label: 'Staff', icon: UsersRound, contentKey: 'employee/staff' },
+        ],
+      },
     ],
   },
   { id: 'reports', label: 'Report', icon: BarChart3, contentKey: 'reports' },

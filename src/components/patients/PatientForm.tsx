@@ -23,7 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { Patient } from '@/types';
-import { GENDERS } from '@/types';
+import { GENDERS, RELATIONS } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from "@/components/ui/progress";
 
@@ -41,7 +41,7 @@ const patientFormSchema = z.object({
   status: z.enum(['Active', 'Inactive', 'Deceased']).optional().or(z.literal('')),
   notes: z.string().optional().or(z.literal('')),
   emergencyContactName: z.string().optional().or(z.literal('')),
-  emergencyContactRelation: z.string().optional().or(z.literal('')),
+  emergencyContactRelationId: z.number().optional(),
   emergencyContactPhone: z.string().optional().or(z.literal('')),
   allergies: z.string().optional().or(z.literal('')),
 });
@@ -75,7 +75,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, re
       status: patient.status || '',
       notes: patient.notes || '',
       emergencyContactName: patient.emergencyContact?.name || '',
-      emergencyContactRelation: patient.emergencyContact?.relation || '',
+      emergencyContactRelationId: patient.emergencyContact?.relationId || undefined,
       emergencyContactPhone: patient.emergencyContact?.phone || '',
       allergies: patient.allergies ? patient.allergies.join(', ') : '',
     } : {
@@ -92,7 +92,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, re
       status: "Active",
       notes: "",
       emergencyContactName: "",
-      emergencyContactRelation: "",
+      emergencyContactRelationId: undefined,
       emergencyContactPhone: "",
       allergies: "",
     },
@@ -114,7 +114,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, re
         status: patient.status || '',
         notes: patient.notes || '',
         emergencyContactName: patient.emergencyContact?.name || '',
-        emergencyContactRelation: patient.emergencyContact?.relation || '',
+        emergencyContactRelationId: patient.emergencyContact?.relationId || undefined,
         emergencyContactPhone: patient.emergencyContact?.phone || '',
         allergies: patient.allergies ? patient.allergies.join(', ') : '',
       });
@@ -122,6 +122,7 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, re
   }, [patient, form]);
 
   const handleSubmit = (data: PatientFormValues) => {
+    const relationObj = RELATIONS.find(r => r.id === data.emergencyContactRelationId);
     const newPatientData: Patient = {
       id: patient?.id || crypto.randomUUID(),
       mrn: data.mrn,
@@ -136,10 +137,11 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, re
       insuranceNumber: data.insuranceNumber,
       status: data.status as Patient['status'],
       notes: data.notes,
-      emergencyContact: (data.emergencyContactName || data.emergencyContactRelation || data.emergencyContactPhone)
+      emergencyContact: (data.emergencyContactName || data.emergencyContactRelationId || data.emergencyContactPhone)
         ? {
             name: data.emergencyContactName || '',
-            relation: data.emergencyContactRelation || '',
+            relationId: data.emergencyContactRelationId || 0,
+            relationName: relationObj ? relationObj.name : '',
             phone: data.emergencyContactPhone || '',
           }
         : undefined,
@@ -383,10 +385,17 @@ const PatientForm: React.FC<PatientFormProps> = ({ patient, onSave, onCancel, re
               )} />
               {/* 2nd row: Relation and Emergency Contact Phone */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <FormField control={form.control} name="emergencyContactRelation" render={({ field }) => (
+                <FormField control={form.control} name="emergencyContactRelationId" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Relation</FormLabel>
-                    <FormControl><Input placeholder="e.g., Husband" {...field} disabled={readOnly} /></FormControl>
+                    <FormControl>
+                      <select {...field} disabled={readOnly} className="w-full border rounded px-2 py-2">
+                        <option value="">Select Relation</option>
+                        {RELATIONS.map(rel => (
+                          <option key={rel.id} value={rel.id}>{rel.name}</option>
+                        ))}
+                      </select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />

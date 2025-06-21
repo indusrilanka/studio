@@ -44,7 +44,6 @@ const navLinks: NavLink[] = [
     children: [
       { id: 'test-catalog', label: 'Test Catalog', icon: ListChecks, contentKey: 'master-data/test-catalog' },
       { id: 'referring-doctors', label: 'Referring Doctors', icon: UsersRound, contentKey: 'master-data/referring-doctors' },
-      { id: 'relation', label: 'Relation', icon: UserCircle, contentKey: 'master-data/relation' },
       { id: 'insurance-provider', label: 'Insurance Provider', icon: UserCog, contentKey: 'master-data/insurance-provider' },
       {
         id: 'department-group',

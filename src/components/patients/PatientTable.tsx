@@ -82,6 +82,7 @@ const PatientTable = () => {
     { field: 'phone', headerName: 'Phone', sortable: true, filter: true },
     { field: 'email', headerName: 'Email', sortable: true, filter: true },
     { field: 'address', headerName: 'Address', sortable: false, filter: false },
+    { field: 'emergencyContact', headerName: 'Emergency Relation', valueGetter: (params: any) => params.data.emergencyContact?.relationName || '', sortable: true, filter: true },
   ];
 
   const getContextMenuItems = (params: any) => {

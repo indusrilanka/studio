@@ -20,8 +20,10 @@ export interface Patient {
   notes?: string;
   emergencyContact?: {
     name: string;
-    relation: string;
+    relationId: number; // references RELATIONS
+    relationName: string; // for display
     phone: string;
+    // relation?: string; // deprecated, use relationId/relationName
   };
   allergies?: string[];
 }
@@ -178,4 +180,28 @@ export interface ReferringDoctor {
   address: string;
   status: 'Active' | 'Inactive';
 }
+
+
+export const RELATIONS = [
+  { id: 1, name: 'Father' },
+  { id: 2, name: 'Mother' },
+  { id: 3, name: 'Spouse' },
+  { id: 4, name: 'Brother' },
+  { id: 5, name: 'Sister' },
+  { id: 6, name: 'Son' },
+  { id: 7, name: 'Daughter' },
+  { id: 8, name: 'Guardian' },
+  { id: 9, name: 'Uncle' },
+  { id: 10, name: 'Aunt' },
+  { id: 11, name: 'Nephew' },
+  { id: 12, name: 'Niece' },
+  { id: 13, name: 'Friend' },
+  { id: 14, name: 'Grandfather' },
+  { id: 15, name: 'Grandmother' },
+  { id: 16, name: 'Cousin' },
+  { id: 17, name: 'Neighbour' },
+  { id: 18, name: 'Employer' },
+  { id: 19, name: 'Employee' },
+  { id: 20, name: 'Other' },
+] as const;
 

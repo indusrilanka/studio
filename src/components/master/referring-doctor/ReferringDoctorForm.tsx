@@ -52,9 +52,7 @@ const ReferringDoctorForm: React.FC<ReferringDoctorFormProps> = ({ doctor, onSav
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-1">
-      <DialogDescription>
-        {readOnly ? 'View all information for this referring doctor.' : doctor ? 'Update the information for this referring doctor.' : 'Fill in the details for the new referring doctor.'}
-      </DialogDescription>
+ 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1">Full Name</label>

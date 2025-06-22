@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import DepartmentTypeTable from './department-type/DepartmentTypeTable';
+import DepartmentTypeTable from './department/department-type/DepartmentTypeTable';
 
 const MasterDataMenu: React.FC = () => {
   const [showDepartmentType, setShowDepartmentType] = useState(false);

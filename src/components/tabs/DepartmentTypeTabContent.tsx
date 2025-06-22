@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import DepartmentTypeTable from '@/components/master/department-type/DepartmentTypeTable';
+import DepartmentTypeTable from '@/components/master/department/department-type/DepartmentTypeTable';
 
 const DepartmentTypeTabContent = () => {
   return (

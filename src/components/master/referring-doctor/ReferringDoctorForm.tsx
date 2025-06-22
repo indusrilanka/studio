@@ -1,120 +1,139 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { DialogDescription } from '@/components/ui/dialog';
 import type { ReferringDoctor } from '@/types';
 import { SPECIALIZATIONS } from '@/types';
 
-interface ReferringDoctorFormProps {
-  doctor?: ReferringDoctor | null;
+interface Props {
+  initialData?: ReferringDoctor | null;
   onSave: (data: ReferringDoctor) => void;
-  onCancel: () => void;
+  onClose: () => void;
   readOnly?: boolean;
 }
 
-const ReferringDoctorForm: React.FC<ReferringDoctorFormProps> = ({ doctor, onSave, onCancel, readOnly = false }) => {
-  const [fullName, setFullName] = useState(doctor?.fullName || '');
-  const [specializationId, setSpecializationId] = useState<number | ''>(doctor?.specializationId || '');
-  const [registrationNumber, setRegistrationNumber] = useState(doctor?.registrationNumber || '');
-  const [hospitalOrClinic, setHospitalOrClinic] = useState(doctor?.hospitalOrClinic || '');
-  const [contactNumber, setContactNumber] = useState(doctor?.contactNumber || '');
-  const [email, setEmail] = useState(doctor?.email || '');
-  const [address, setAddress] = useState(doctor?.address || '');
-  const [status, setStatus] = useState<ReferringDoctor['status']>(doctor?.status || 'Active');
+export default function ReferringDoctorForm({ initialData, onSave, onClose, readOnly }: Props) {
+  const [form, setForm] = useState<ReferringDoctor>(
+    initialData || {
+      id: 0,
+      fullName: '',
+      specializationId: 0,
+      specializationName: '',
+      registrationNumber: '',
+      hospitalOrClinic: '',
+      contactNumber: '',
+      email: '',
+      address: '',
+      status: 'Active',
+    }
+  );
 
   useEffect(() => {
-    setFullName(doctor?.fullName || '');
-    setSpecializationId(doctor?.specializationId || '');
-    setRegistrationNumber(doctor?.registrationNumber || '');
-    setHospitalOrClinic(doctor?.hospitalOrClinic || '');
-    setContactNumber(doctor?.contactNumber || '');
-    setEmail(doctor?.email || '');
-    setAddress(doctor?.address || '');
-    setStatus(doctor?.status || 'Active');
-  }, [doctor]);
+    if (initialData) {
+      setForm(initialData);
+    }
+  }, [initialData]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSpecializationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = Number(e.target.value);
+    const name = SPECIALIZATIONS.find(s => s.id === id)?.name || '';
+    setForm((prev) => ({ ...prev, specializationId: id, specializationName: name }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const specializationName = SPECIALIZATIONS.find(s => s.id === specializationId)?.name || '';
-    onSave({
-      id: doctor?.id || Math.floor(Math.random() * 100000),
-      fullName,
-      specializationId: specializationId ? Number(specializationId) : 0,
-      specializationName,
-      registrationNumber,
-      hospitalOrClinic,
-      contactNumber,
-      email,
-      address,
-      status,
-    });
+    onSave(form);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-1">
- 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Full Name</label>
-          <Input value={fullName} onChange={e => setFullName(e.target.value)} required disabled={readOnly} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Specialization</label>
-          <select
-            value={specializationId}
-            onChange={e => setSpecializationId(Number(e.target.value))}
-            required
-            disabled={readOnly}
-            className="w-full border rounded px-2 py-2"
-          >
-            <option value="">Select Specialization</option>
-            {SPECIALIZATIONS.map(spec => (
-              <option key={spec.id} value={spec.id}>{spec.name}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Registration Number</label>
-          <Input value={registrationNumber} onChange={e => setRegistrationNumber(e.target.value)} required disabled={readOnly} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Hospital/Clinic</label>
-          <Input value={hospitalOrClinic} onChange={e => setHospitalOrClinic(e.target.value)} required disabled={readOnly} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Contact Number</label>
-          <Input value={contactNumber} onChange={e => setContactNumber(e.target.value)} required disabled={readOnly} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <Input value={email} onChange={e => setEmail(e.target.value)} required disabled={readOnly} />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium mb-1">Address</label>
-          <Input value={address} onChange={e => setAddress(e.target.value)} required disabled={readOnly} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Status</label>
-          <select
-            value={status}
-            onChange={e => setStatus(e.target.value as ReferringDoctor['status'])}
-            required
-            disabled={readOnly}
-            className="w-full border rounded px-2 py-2"
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-4 p-4">
+      <h3 className="text-lg font-semibold mb-2">
+        {readOnly
+          ? 'View Referring Doctor'
+          : form.id
+          ? 'Edit Referring Doctor'
+          : 'Add Referring Doctor'}
+      </h3>
+      <Input
+        name="fullName"
+        placeholder="Full Name"
+        value={form.fullName}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <select
+        name="specializationId"
+        value={form.specializationId}
+        onChange={handleSpecializationChange}
+        required
+        disabled={readOnly}
+        className="w-full border rounded p-2"
+      >
+        <option value="">Select Specialization</option>
+        {SPECIALIZATIONS.map(spec => (
+          <option key={spec.id} value={spec.id}>{spec.name}</option>
+        ))}
+      </select>
+      <Input
+        name="registrationNumber"
+        placeholder="Registration Number"
+        value={form.registrationNumber}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <Input
+        name="hospitalOrClinic"
+        placeholder="Hospital/Clinic"
+        value={form.hospitalOrClinic}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <Input
+        name="contactNumber"
+        placeholder="Contact Number"
+        value={form.contactNumber}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <Input
+        name="email"
+        placeholder="Email"
+        value={form.email}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <Input
+        name="address"
+        placeholder="Address"
+        value={form.address}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <select
+        name="status"
+        value={form.status}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+        className="w-full border rounded p-2"
+      >
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+      <div className="flex justify-end gap-2">
+        <Button type="button" variant="secondary" onClick={onClose}>Close</Button>
+        {!readOnly && <Button type="submit">Save</Button>}
       </div>
-      {!readOnly && (
-        <div className="flex justify-end gap-2 mt-4">
-          <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
-          <Button type="submit">{doctor ? 'Save' : 'Add'}</Button>
-        </div>
-      )}
     </form>
   );
-};
-
-export default ReferringDoctorForm;
+}

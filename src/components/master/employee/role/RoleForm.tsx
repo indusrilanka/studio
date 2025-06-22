@@ -1,45 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { DialogDescription } from '@/components/ui/dialog';
 import type { Role } from '@/types';
 
-interface RoleFormProps {
-  role?: Role | null;
+interface Props {
+  initialData?: Role | null;
   onSave: (data: Role) => void;
-  onCancel: () => void;
+  onClose: () => void;
   readOnly?: boolean;
 }
 
-const RoleForm: React.FC<RoleFormProps> = ({ role, onSave, onCancel, readOnly = false }) => {
-  const [name, setName] = useState(role?.name || '');
+export default function RoleForm({ initialData, onSave, onClose, readOnly }: Props) {
+  const [form, setForm] = useState<Role>(
+    initialData || {
+      id: 0,
+      name: '',
+    }
+  );
 
   useEffect(() => {
-    setName(role?.name || '');
-  }, [role]);
+    if (initialData) {
+      setForm(initialData);
+    }
+  }, [initialData]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({ id: role?.id || Math.floor(Math.random() * 100000), name });
+    onSave(form);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-1">
-      <DialogDescription>
-        {readOnly ? 'View all information for this role.' : role ? 'Update the information for this role.' : 'Fill in the details for the new role.'}
-      </DialogDescription>
-      <div>
-        <label className="block text-sm font-medium mb-1">Role Name</label>
-        <Input value={name} onChange={e => setName(e.target.value)} required disabled={readOnly} />
+    <form onSubmit={handleSubmit} className="space-y-4 p-4">
+      <h3 className="text-lg font-semibold mb-2">
+        {readOnly
+          ? 'View Role'
+          : form.id
+          ? 'Edit Role'
+          : 'Add Role'}
+      </h3>
+      <Input
+        name="name"
+        placeholder="Role Name"
+        value={form.name}
+        onChange={handleChange}
+        required
+        disabled={readOnly}
+      />
+      <div className="flex justify-end gap-2">
+        <Button type="button" variant="secondary" onClick={onClose}>Close</Button>
+        {!readOnly && <Button type="submit">Save</Button>}
       </div>
-      {!readOnly && (
-        <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
-          <Button type="submit">{role ? 'Save' : 'Add'}</Button>
-        </div>
-      )}
     </form>
   );
-};
-
-export default RoleForm;
+}

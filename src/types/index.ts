@@ -205,6 +205,7 @@ export const RELATIONS = [
   { id: 20, name: 'Other' },
 ] as const;
 
+
 export interface InsuranceProvider {
   id: number;
   name: string;
@@ -212,5 +213,10 @@ export interface InsuranceProvider {
   contactNumber?: string;
   address?: string;
   status: 'Active' | 'Inactive';
+}
+
+export interface TestCategory {
+  categoryId: number;
+  categoryName: string;
 }
 

@@ -42,7 +42,43 @@ const navLinks: NavLink[] = [
     label: 'Master Data',
     icon: Database,
     children: [
-      { id: 'test-catalog', label: 'Test Catalog', icon: ListChecks, contentKey: 'master-data/test-catalog' },
+      {
+        id: 'test-catalog',
+        label: 'Test Catalog',
+        icon: ListChecks,        
+        children: [
+          {
+            id: 'category',
+            label: 'Category',
+            icon: ListChecks,
+            contentKey: 'test-catalog/category',
+          },
+          {
+            id: 'container',
+            label: 'Container',
+            icon: ListChecks,
+            contentKey: 'master-data/container',
+          },
+          {
+            id: 'sample-type',
+            label: 'Sample Type',
+            icon: ListChecks,
+            contentKey: 'master-data/sample-type',
+          },
+          {
+            id: 'test-method',
+            label: 'Test Method',
+            icon: ListChecks,
+            contentKey: 'master-data/test-method',
+          },
+          {
+            id: 'unit',
+            label: 'Unit',
+            icon: ListChecks,
+            contentKey: 'master-data/unit',
+          },
+        ],
+      },
       { id: 'referring-doctors', label: 'Referring Doctors', icon: UsersRound, contentKey: 'master-data/referring-doctors' },
       { id: 'insurance-provider', label: 'Insurance Provider', icon: UserCog, contentKey: 'master-data/insurance-provider' },
       {

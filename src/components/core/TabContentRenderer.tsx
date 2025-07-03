@@ -10,6 +10,7 @@ import RoleTabContent from '../tabs/RoleTabContent';
 import StaffTabContent from '../tabs/StaffTabContent';
 import ReferringDoctorTabContent from '../tabs/ReferringDoctorTabContent';
 import InsuranceProviderTabContent from '../tabs/InsuranceProviderTabContent';
+import TestCategoryTabContent from '../tabs/TestCategoryTabContent';
 
 
 interface TabContentRendererProps {
@@ -38,6 +39,8 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
       return <PlaceholderTabContent title={tab.title} />;
     // Sub-menu items for Master Data
     case 'master-data/test-catalog':
+    case 'test-catalog/category': 
+      return <TestCategoryTabContent/>;
     case 'master-data/referring-doctors':
       return <ReferringDoctorTabContent/>;
     case 'master-data/insurance-provider':

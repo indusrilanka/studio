@@ -57,7 +57,7 @@ const navLinks: NavLink[] = [
             id: 'container',
             label: 'Container',
             icon: ListChecks,
-            contentKey: 'master-data/container',
+            contentKey: 'test-catalog/container',
           },
           {
             id: 'sample-type',

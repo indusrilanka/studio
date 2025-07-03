@@ -1,3 +1,4 @@
+export type { Container } from './container';
 import type { LucideIcon } from 'lucide-react';
 
 import { ColDef } from 'ag-grid-community';

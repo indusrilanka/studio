@@ -13,6 +13,7 @@ import InsuranceProviderTabContent from '../tabs/InsuranceProviderTabContent';
 import TestCategoryTabContent from '../tabs/TestCategoryTabContent';
 import ContainerTabContent from '../tabs/ContainerTabContent';
 import UnitTabContent from '../tabs/UnitTabContent';
+import SampleTypeTabContent from '../tabs/SampleTypeTabContent';
 
 
 interface TabContentRendererProps {
@@ -46,7 +47,9 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
     case 'test-catalog/container':
       return <ContainerTabContent/>
     case 'test-catalog/unit':
-      return <UnitTabContent/>
+      return <UnitTabContent/>;
+    case 'test-catalog/sample-type':
+      return <SampleTypeTabContent />;
     case 'master-data/referring-doctors':
       return <ReferringDoctorTabContent/>;
     case 'master-data/insurance-provider':

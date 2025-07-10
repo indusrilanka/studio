@@ -226,3 +226,8 @@ export interface TestUnit {
   unitName: string;
   symbol: string;
 }
+
+export interface SampleType  {
+  sampleTypeId: number;
+  sampleTypeName: string;
+};

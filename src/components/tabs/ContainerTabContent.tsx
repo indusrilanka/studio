@@ -1,5 +1,5 @@
 import React from 'react';
-import ContainerTable from '../master/container/ContainerTable';
+import ContainerTable from '../master/test-catalog/container/ContainerTable';
 
 const ContainerTabContent = () => {
       return (

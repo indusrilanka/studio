@@ -221,3 +221,8 @@ export interface TestCategory {
   categoryName: string;
 }
 
+export interface TestUnit {
+  unitId: number;
+  unitName: string;
+  symbol: string;
+}

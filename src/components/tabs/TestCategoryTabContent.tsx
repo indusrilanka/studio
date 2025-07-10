@@ -1,5 +1,5 @@
 import React from 'react';
-import TestCategoryTable from '../master/test-category/TestCategoryTable';
+import TestCategoryTable from '../master/test-catalog/category/TestCategoryTable';
 
 
 const TestCategoryTabContent = () =>{

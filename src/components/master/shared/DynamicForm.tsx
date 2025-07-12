@@ -23,7 +23,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ initialData, onSave, onClose,
   useEffect(() => {
     const initial: { [key: string]: any } = {};
     fields.forEach(f => {
-      initial[f.name] = initialData?.[f.name] ?? f.defaultValue ?? '';
+      const value = initialData?.[f.name];
+      if (f.type === 'number') {
+        initial[f.name] = value !== undefined && value !== null && value !== '' ? Number(value) : (f.defaultValue ?? 0);
+      } else {
+        initial[f.name] = value !== undefined && value !== null ? String(value) : (f.defaultValue ?? '');
+      }
     });
     setForm(initial);
   }, [initialData, fields]);
@@ -41,13 +46,23 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ initialData, onSave, onClose,
       {fields.map(field => (
         <div key={field.name}>
           <label className="block mb-1 font-medium">{field.label}</label>
-          {field.type === 'text' || field.type === 'number' ? (
+          {field.type === 'text' ? (
             <input
-              type={field.type}
+              type="text"
               name={field.name}
               className="w-full border rounded px-2 py-1"
-              value={form[field.name]}
-              onChange={e => handleChange(field.name, field.type === 'number' ? Number(e.target.value) : e.target.value)}
+              value={form[field.name] ?? ''}
+              onChange={e => handleChange(field.name, e.target.value)}
+              required={field.required}
+              readOnly={field.readOnly}
+            />
+          ) : field.type === 'number' ? (
+            <input
+              type="number"
+              name={field.name}
+              className="w-full border rounded px-2 py-1"
+              value={form[field.name] ?? 0}
+              onChange={e => handleChange(field.name, Number(e.target.value))}
               required={field.required}
               readOnly={field.readOnly}
             />
@@ -55,7 +70,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ initialData, onSave, onClose,
             <textarea
               name={field.name}
               className="w-full border rounded px-2 py-1 min-h-[60px]"
-              value={form[field.name]}
+              value={form[field.name] ?? ''}
               onChange={e => handleChange(field.name, e.target.value)}
               required={field.required}
               readOnly={field.readOnly}
@@ -64,7 +79,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ initialData, onSave, onClose,
             <select
               name={field.name}
               className="w-full border rounded px-2 py-1"
-              value={form[field.name]}
+              value={form[field.name] ?? ''}
               onChange={e => handleChange(field.name, e.target.value)}
               required={field.required}
               disabled={field.readOnly}
@@ -81,7 +96,6 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ initialData, onSave, onClose,
         <button type="button" className="px-3 py-1 bg-gray-200 rounded" onClick={onClose}>Close</button>
         <button type="submit" className="px-3 py-1 bg-primary text-white rounded">Save</button>
       </div>
-
     </form>
   );
 };

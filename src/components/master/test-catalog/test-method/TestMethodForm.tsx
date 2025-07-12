@@ -1,13 +1,12 @@
 import React from 'react';
-import SimpleNameForm from '../../shared/SimpleNameForm';
+import DynamicForm, { DynamicFormField } from '../../shared/DynamicForm';
+
+const fields: DynamicFormField[] = [
+  { name: 'methodName', label: 'Test Method Name', type: 'text', required: true },
+];
 
 const TestMethodForm = (props: any) => (
-  <SimpleNameForm
-    {...props}
-    nameField="methodName"
-    label="Test Method Name"
-    idField="methodId"
-  />
+  <DynamicForm {...props} fields={fields} />
 );
 
 export default TestMethodForm;

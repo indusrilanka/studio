@@ -1,3 +1,5 @@
+
+   
 "use client";
 
 import React from 'react';
@@ -14,6 +16,7 @@ import TestCategoryTabContent from '../tabs/TestCategoryTabContent';
 import ContainerTabContent from '../tabs/ContainerTabContent';
 import UnitTabContent from '../tabs/UnitTabContent';
 import SampleTypeTabContent from '../tabs/SampleTypeTabContent';
+import TestMethodTabContent from '../tabs/TestMethodTabContent';
 
 
 interface TabContentRendererProps {
@@ -50,6 +53,8 @@ const TabContentRenderer: React.FC<TabContentRendererProps> = ({ tab }) => {
       return <UnitTabContent/>;
     case 'test-catalog/sample-type':
       return <SampleTypeTabContent />;
+    case 'test-catalog/test-method':
+      return <TestMethodTabContent />;
     case 'master-data/referring-doctors':
       return <ReferringDoctorTabContent/>;
     case 'master-data/insurance-provider':
